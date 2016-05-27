@@ -1,0 +1,33 @@
+{
+  "name": "react.force.datacontainer",
+  "version": "0.0.1",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ivanbogdanov/react.force.datacontainer.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ivanbogdanov/react.force.datacontainer/issues"
+  },
+  "homepage": "https://github.com/ivanbogdanov/react.force.datacontainer#readme",
+  "peerDependencies": {
+    "react-native": ">=0.20.0",
+    "react.force": "git+ssh://git@github.com/ivanbogdanov/react.force.git",
+    "react.force.data": "git+ssh://git@github.com/ivanbogdanov/react.force.data.git"
+  },
+  "dependencies": {
+    "lodash.findindex": "^4.4.0",
+    "lodash.keys": "^4.0.7",
+    "lodash.merge": "^4.4.0",
+    "lodash.remove": "^4.5.0",
+    "lodash.trim": "^4.4.0",
+    "lodash.union": "^4.4.0",
+    "shallowequal": "^0.2.2"
+  }
+}
