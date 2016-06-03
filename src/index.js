@@ -4,6 +4,7 @@ import RelevantItems from './RelevantItems';
 
 module.exports = {
   SobjContainer: SobjContainer,
+  Sobj: SobjContainer,
   ListContainer: List,
   RelevantItems: RelevantItems
 };
