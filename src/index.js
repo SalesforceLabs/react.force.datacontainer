@@ -1,7 +1,7 @@
 import SobjContainer from './SobjContainer';
 import List from './List';
 import RelevantItems from './RelevantItems';
-import {util} from 'react.force.data';
+import {utils} from 'react.force.data';
 
 module.exports = {
   SobjContainer: SobjContainer,
@@ -9,5 +9,5 @@ module.exports = {
   ListContainer: List,
   List: List,
   RelevantItems: RelevantItems,
-  util: util
+  utils: utils
 };
