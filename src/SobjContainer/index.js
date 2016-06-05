@@ -146,7 +146,7 @@ module.exports = React.createClass ({
     if(this.props.type !== nextProps.type){
       return true;
     }
-    if(!shallowEqual(this.state.sobj, nextProps.sobj)){
+    if(!shallowEqual(this.state.sobj, nextState.sobj)){
       return true;
     }
     return false;
