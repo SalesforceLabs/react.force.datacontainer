@@ -45,7 +45,9 @@ const notify = (ids,sobjs,compactLayout,defaultLayout) => {
             defaultLayout:defaultLayout
           });
           */
-          subscriber.updateSobj(sobj,compactLayout,defaultLayout);
+          if(sobj && sobj.attributes && sobj.attributes.type){
+            subscriber.updateSobj(sobj,compactLayout,defaultLayout);
+          }
         }
       }
     });
@@ -117,8 +119,8 @@ module.exports = React.createClass ({
           this.setState({
             sobj:opts.cachedSobj,
             compactTitle: opts.cachedSobj.attributes.compactTitle,
-            compactLayout:opts.compactLayout,
-            defaultLayout:opts.defaultLayout,
+            compactLayout:opts.cachedCompactLayout,
+            defaultLayout:opts.cachedDefaultLayout,
           });
         }
       });
@@ -136,13 +138,10 @@ module.exports = React.createClass ({
       this.getInfo();
     }
   },
-/*
+
   shouldComponentUpdate(nextProps, nextState){
     if(!this.props.update){
-//      return false;
-    }
-    if(this.props.type !== nextProps.type){
-      return true;
+      return false;
     }
     if(this.props.type !== nextProps.type){
       return true;
@@ -150,10 +149,7 @@ module.exports = React.createClass ({
     if(!shallowEqual(this.state.sobj, nextProps.sobj)){
       return true;
     }
-    if(this.state.loading !== nextProps.loading){
-      return true;
-    }
     return false;
   }
-*/
+
 });
