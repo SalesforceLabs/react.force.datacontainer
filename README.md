@@ -7,6 +7,6 @@
 
   ```
 
-  npm install git+ssh://git@github.com:ivanbogdanov/react.force.datacontainer.git --save
+  npm install git+ssh://git@github.com:ForceDotComLabs/react.force.datacontainer.git --save
 
   ```
