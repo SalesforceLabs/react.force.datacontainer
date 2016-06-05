@@ -10,6 +10,8 @@ import union from 'lodash.union';
 
 import {forceClient} from 'react.force';
 
+import {requestWithTypeAndId} from 'react.force.data';
+
 module.exports = React.createClass ({
   getDefaultProps(){
     return {
@@ -61,6 +63,9 @@ module.exports = React.createClass ({
     forceClient.query(soql,
       (response) => {
         const items = response.records;
+        items.forEach((item)=>{
+          requestWithTypeAndId(this.props.type,item.Id);
+        });
         this.setState({
           dataSource: this.getDataSource(items)
         });

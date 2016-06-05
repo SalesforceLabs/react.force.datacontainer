@@ -7,6 +7,8 @@ import React, {
 
 import {forceClient} from 'react.force';
 
+import {requestWithTypeAndId} from 'react.force.data';
+
 module.exports = React.createClass ({
   getDefaultProps(){
     return {
@@ -45,6 +47,7 @@ module.exports = React.createClass ({
           const typeItems = response[0];
           if(typeItems.recordIds && typeItems.recordIds.length){
             const items = typeItems.recordIds.map((recordId)=>{
+              requestWithTypeAndId(type,recordId)
               return {
                 Id:recordId,
                 attributes:{
