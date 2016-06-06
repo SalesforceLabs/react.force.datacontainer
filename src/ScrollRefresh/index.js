@@ -28,13 +28,46 @@
 
 import React, {
   View,
-  ScrollView
+  ScrollView,
+  RefreshControl
 } from 'react-native';
 
 module.exports = React.createClass ({
+  contextTypes: {
+    doRefresh: React.PropTypes.func,
+    refreshedDate: React.PropTypes.instanceOf(Date)
+  },
+
+  getInitialState(){
+    return {
+      refreshing: false,
+    };
+  },
+
+  onRefresh(){
+    this.setState({refreshing:true});
+    if(this.context.doRefresh){
+      this.context.doRefresh();
+    }
+  },
+
+  componentWillUpdate(nextProps, nextState, nextContext){
+    if(nextContext.refreshedDate !== this.context.refreshedDate){
+      this.setState({refreshing:false});
+    }
+  },
+
   render() {
     return (
-      <ScrollView {... this.props} style={[this.props.style]}>
+      <ScrollView {... this.props} 
+        style={[this.props.style]}
+        refreshControl={
+          <RefreshControl
+            refreshing={this.state.refreshing}
+            onRefresh={this.onRefresh}
+          />
+        }          
+      >
         {this.props.children}
       </ScrollView>
     )

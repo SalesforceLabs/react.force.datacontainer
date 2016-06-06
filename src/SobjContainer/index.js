@@ -85,21 +85,26 @@ module.exports = React.createClass ({
   childContextTypes: {
     sobj: React.PropTypes.object,
     compactLayout: React.PropTypes.object,
-    defaultLayout: React.PropTypes.object
+    defaultLayout: React.PropTypes.object,
+    doRefresh: React.PropTypes.func,
+    refreshedDate: React.PropTypes.instanceOf(Date)
   },
   getInitialState(){
     return {
       sobj:this.props.sobj?this.props.sobj:{Name:' ',attributes:{}},
       compactLayout:{},
       defaultLayout:{},
-      loading:false
+      loading:false,
+      refreshedDate: new Date()
     };
   },
   getChildContext() {
     return {
       sobj: this.state.sobj,
       compactLayout:this.state.compactLayout,
-      defaultLayout:this.state.defaultLayout
+      defaultLayout:this.state.defaultLayout,
+      doRefresh:this.handleRefresh,
+      refreshedDate:this.state.refreshedDate
     };
   },
   componentDidMount(){
@@ -109,12 +114,17 @@ module.exports = React.createClass ({
   componentWillUnmount(){
     unsubscribe(this);
   },
+  handleRefresh(){
+    console.log('>>> REFRESH !!!');
+    this.getInfo(true);
+  },
   updateSobj(sobj,compactLayout,defaultLayout){
     this.setState({
       sobj:sobj,
       loading:false,
       compactLayout:compactLayout,
-      defaultLayout:defaultLayout
+      defaultLayout:defaultLayout,
+      refreshedDate: new Date()
     });
   },
   handleDataLoad(){
@@ -125,12 +135,12 @@ module.exports = React.createClass ({
       });
     }
   },
-  getInfo() {
+  getInfo(nocache) {
     this.setState({loading:true});
     if(!this.props.type || !this.props.id){
       return;
     }
-    getByTypeAndId(this.props.type,this.props.id)
+    getByTypeAndId(this.props.type,this.props.id,nocache)
     .then((opts)=>{
         if(opts.cachedSobj){
           this.setState({
@@ -138,6 +148,7 @@ module.exports = React.createClass ({
             compactTitle: opts.cachedSobj.attributes.compactTitle,
             compactLayout:opts.cachedCompactLayout,
             defaultLayout:opts.cachedDefaultLayout,
+            refreshedDate: new Date()
           });
         }
       });
