@@ -23,19 +23,20 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
- 
-import SobjContainer from './SobjContainer';
-import List from './List';
-import RelevantItems from './RelevantItems';
-import ScrollRefresh from './ScrollRefresh';
-import {utils} from 'react.force.data';
 
-module.exports = {
-  SobjContainer: SobjContainer,
-  Sobj: SobjContainer,
-  ListContainer: List,
-  List: List,
-  RelevantItems: RelevantItems,
-  ScrollRefresh: ScrollRefresh,
-  utils: utils
-};
+'use strict';
+
+import React, {
+  View,
+  ScrollView
+} from 'react-native';
+
+module.exports = React.createClass ({
+  render() {
+    return (
+      <ScrollView {... this.props} style={[this.props.style]}>
+        {this.props.children}
+      </ScrollView>
+    )
+  },
+});
