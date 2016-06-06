@@ -46,7 +46,8 @@ module.exports = React.createClass ({
       where:null,
       limit:200,
       refreshDate:new Date(),
-      style:{}
+      style:{},
+      fullFetch:true
     };
   },
   childContextTypes: {
@@ -89,9 +90,11 @@ module.exports = React.createClass ({
     forceClient.query(soql,
       (response) => {
         const items = response.records;
-        items.forEach((item)=>{
-          requestWithTypeAndId(this.props.type,item.Id);
-        });
+        if(this.props.fullFetch){
+          items.forEach((item)=>{
+            requestWithTypeAndId(this.props.type,item.Id);
+          });
+        }
         this.setState({
           dataSource: this.getDataSource(items)
         });
