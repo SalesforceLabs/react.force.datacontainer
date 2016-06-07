@@ -70,7 +70,9 @@ module.exports = React.createClass ({
           />
         }          
       >
+       <View>
         {this.props.children}
+       </View>
       </ScrollView>
     )
   },
