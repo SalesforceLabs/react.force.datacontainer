@@ -79,7 +79,8 @@ module.exports = React.createClass ({
       type:null,
       id:null,
       refreshDate:new Date(),
-      update:true
+      update:true,
+      style:{}
     };
   },
   childContextTypes: {
@@ -156,7 +157,7 @@ module.exports = React.createClass ({
 
   render() {
     return (
-      <View>
+      <View style={this.props.style}>
         {this.props.children}
       </View>
     )
