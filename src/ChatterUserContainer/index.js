@@ -36,17 +36,8 @@ const notify = (ids, records) => {
         const index = findIndex(ids, (id) => {
           return id.indexOf(searchId)>-1;
         });
-//        const index = ids.indexOf(subscriber.props.id);
         if(index>-1){
           const record = records[index];
-          /*
-          subscriber.setState({
-            sobj:sobj,
-            loading:false,
-            compactLayout:compactLayout,
-            defaultLayout:defaultLayout
-          });
-          */
           subscriber.updateChatterData(record);
         }
       }
@@ -68,22 +59,16 @@ module.exports = React.createClass ({
   },
   childContextTypes: {
     chatterData: React.PropTypes.object,
-    // compactLayout: React.PropTypes.object,
-    // defaultLayout: React.PropTypes.object
   },
   getInitialState(){
     return {
       chatterData:this.props.chatterData?this.props.chatterData:{Name:' ',attributes:{}},
-      // compactLayout:{},
-      // defaultLayout:{},
       loading:false
     };
   },
   getChildContext() {
     return {
       chatterData: this.state.chatterData,
-      // compactLayout:this.state.compactLayout,
-      // defaultLayout:this.state.defaultLayout
     };
   },
   componentDidMount(){
@@ -96,16 +81,12 @@ module.exports = React.createClass ({
   updateChatterData(chatterData){
     this.setState({
       chatterData:chatterData,
-      // loading:false,
-      // compactLayout:compactLayout,
-      // defaultLayout:defaultLayout
     });
   },
   handleDataLoad(){
     if(this.props.onData){
       this.props.onData({
         chatterData:this.state.chatterData
-        // compactLayout:this.state.compactLayout
       });
     }
   },
@@ -122,17 +103,6 @@ module.exports = React.createClass ({
           });
         }
       });
-    // getByTypeAndId(this.props.type,this.props.id)
-    // .then((opts)=>{
-    //     if(opts.cachedSobj){
-    //       this.setState({
-    //         sobj:opts.cachedSobj,
-    //         compactTitle: opts.cachedSobj.attributes.compactTitle,
-    //         compactLayout:opts.compactLayout,
-    //         defaultLayout:opts.defaultLayout,
-    //       });
-    //     }
-    //   });
   },
 
   render() {
@@ -146,25 +116,5 @@ module.exports = React.createClass ({
     if(this.props.refreshDate !== newProps.refreshDate){
       this.getInfo();
     }
-  },
-/*
-  shouldComponentUpdate(nextProps, nextState){
-    if(!this.props.update){
-//      return false;
-    }
-    if(this.props.type !== nextProps.type){
-      return true;
-    }
-    if(this.props.type !== nextProps.type){
-      return true;
-    }
-    if(!shallowEqual(this.state.sobj, nextProps.sobj)){
-      return true;
-    }
-    if(this.state.loading !== nextProps.loading){
-      return true;
-    }
-    return false;
   }
-*/
 });
