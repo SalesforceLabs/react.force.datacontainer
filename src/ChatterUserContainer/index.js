@@ -54,11 +54,13 @@ module.exports = React.createClass ({
       type:null,
       id:null,
       refreshDate:new Date(),
-      update:true
+      update:true,
+      style:{}
     };
   },
   childContextTypes: {
     chatterData: React.PropTypes.object,
+    doRefresh: React.PropTypes.func
   },
   getInitialState(){
     return {
@@ -69,6 +71,7 @@ module.exports = React.createClass ({
   getChildContext() {
     return {
       chatterData: this.state.chatterData,
+      doRefresh: this.handleRefresh
     };
   },
   componentDidMount(){
@@ -77,6 +80,10 @@ module.exports = React.createClass ({
   },
   componentWillUnmount(){
     unsubscribe(this);
+  },
+  handleRefresh(){
+    console.log('>>> REFRESH !!!');
+    this.getInfo();
   },
   updateChatterData(chatterData){
     this.setState({
@@ -107,7 +114,7 @@ module.exports = React.createClass ({
 
   render() {
     return (
-      <View>
+      <View style={this.props.style}>
         {this.props.children}
       </View>
     )
@@ -116,5 +123,17 @@ module.exports = React.createClass ({
     if(this.props.refreshDate !== newProps.refreshDate){
       this.getInfo();
     }
+  },
+  shouldComponentUpdate(nextProps, nextState){
+    if(!this.props.update){
+      return false;
+    }
+    if(this.props.id !== nextProps.id){
+      return true;
+    }
+    if(!shallowEqual(this.state.chatterData, nextState.chatterData)){
+      return true;
+    }
+    return false;
   }
 });
