@@ -11,8 +11,8 @@ import shallowEqual from 'shallowequal';
 import findIndex from 'lodash.findindex';
 
 import {
-  reportQuery,
-  getByReportUserId
+  getBtLogoByCompanyName,
+  btLogoQuery
 } from 'react.force.data';
 
 const subscribers = [];
@@ -28,23 +28,24 @@ const unsubscribe = (comp) => {
   }
 };
 
-const notify = (id, record) => {
+const notify = (ids, records) => {
   if(subscribers && subscribers.length){
     subscribers.forEach((subscriber)=>{
       if(subscriber && subscriber.props && subscriber.props.id){
         const searchId = subscriber.props.id;
-        const index = id.indexOf(searchId)>-1;
-
+        const index = findIndex(ids, (id) => {
+          return id.indexOf(searchId)>-1;
+        });
         if(index>-1){
-          // const record = records[index];
-          subscriber.updateReportData(record);
+          const record = records[index];
+          subscriber.updateBtData(record);
         }
       }
     });
   }
 };
 
-reportQuery.addListener(notify);
+btLogoQuery.addListener(notify);
 
 
 module.exports = React.createClass ({
@@ -58,18 +59,18 @@ module.exports = React.createClass ({
     };
   },
   childContextTypes: {
-    reportData: React.PropTypes.object,
+    btLogoData: React.PropTypes.object,
     doRefresh: React.PropTypes.func
   },
   getInitialState(){
     return {
-      reportData:this.props.reportData?this.props.reportData:{Name:' ',attributes:{}},
+      btLogoData:this.props.btLogoData?this.props.btLogoData:{Name:' ',attributes:{}},
       loading:false
     };
   },
   getChildContext() {
     return {
-      reportData: this.state.reportData,
+      btLogoData: this.state.btLogoData,
       doRefresh: this.handleRefresh
     };
   },
@@ -84,15 +85,15 @@ module.exports = React.createClass ({
     console.log('>>> REFRESH !!!');
     this.getInfo();
   },
-  updateReportData(reportData){
+  updateBtData(btLogoData){
     this.setState({
-      reportData:reportData,
+      btLogoData:btLogoData,
     });
   },
   handleDataLoad(){
     if(this.props.onData){
       this.props.onData({
-        reportData:this.state.reportData
+        btLogoData:this.state.btLogoData
       });
     }
   },
@@ -101,16 +102,15 @@ module.exports = React.createClass ({
     if(!this.props.id){
       return;
     }
-    getByReportId(this.props.id)
+    getBtLogoByCompanyName(this.props.id)
       .then((opts)=>{
-        if(opts.cachedReportData){
+        if(opts.cachedBtLogoData){
           this.setState({
-            reportData: opts.reportData
+            btLogoData: opts.btLogoData
           });
         }
       });
   },
-
   render() {
     return (
       <View style={this.props.style}>
@@ -119,8 +119,7 @@ module.exports = React.createClass ({
     )
   },
   componentWillReceiveProps(newProps){
-    //only refresh every 10 minutes
-    if(this.props.refreshDate.getTime() <= newProps.refreshDate.getTime()-600000){
+    if(this.props.refreshDate !== newProps.refreshDate){
       this.getInfo();
     }
   },
@@ -131,7 +130,7 @@ module.exports = React.createClass ({
     if(this.props.id !== nextProps.id){
       return true;
     }
-    if(!shallowEqual(this.state.reportData, nextState.reportData)){
+    if(!shallowEqual(this.state.btLogoData, nextState.btLogoData)){
       return true;
     }
     return false;
