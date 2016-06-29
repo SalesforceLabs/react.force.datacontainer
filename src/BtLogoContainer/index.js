@@ -124,15 +124,15 @@ module.exports = React.createClass ({
     }
   },
   shouldComponentUpdate(nextProps, nextState){
-    // if(!this.props.update){
-    //   return false;
-    // }
-    // if(this.props.id !== nextProps.id){
-    //   return true;
-    // }
-    // if(!shallowEqual(this.state.btLogoData, nextState.btLogoData)){
-    //   return true;
-    // }
+    if(!this.props.update){
+      return false;
+    }
+    if(this.props.id !== nextProps.id){
+      return true;
+    }
+    if(!shallowEqual(this.state.btLogoData, nextState.btLogoData)){
+      return true;
+    }
     return true;
 
   }
