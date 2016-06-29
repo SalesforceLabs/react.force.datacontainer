@@ -106,7 +106,7 @@ module.exports = React.createClass ({
       .then((opts)=>{
         if(opts.cachedBtLogoData){
           this.setState({
-            btLogoData: opts.btLogoData
+            btLogoData: opts.cachedBtLogoData
           });
         }
       });
@@ -124,15 +124,16 @@ module.exports = React.createClass ({
     }
   },
   shouldComponentUpdate(nextProps, nextState){
-    if(!this.props.update){
-      return false;
-    }
-    if(this.props.id !== nextProps.id){
-      return true;
-    }
-    if(!shallowEqual(this.state.btLogoData, nextState.btLogoData)){
-      return true;
-    }
-    return false;
+    // if(!this.props.update){
+    //   return false;
+    // }
+    // if(this.props.id !== nextProps.id){
+    //   return true;
+    // }
+    // if(!shallowEqual(this.state.btLogoData, nextState.btLogoData)){
+    //   return true;
+    // }
+    return true;
+
   }
 });

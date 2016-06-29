@@ -1,18 +1,21 @@
+
 'use strict';
 
 import React from 'react';
 
 import ReactNative, {
   Text,
-  View
+  View,
+  ListView
 } from 'react-native';
 
 import shallowEqual from 'shallowequal';
 import findIndex from 'lodash.findindex';
+import {forceClient} from 'react.force';
 
 import {
-  chatterQuery,
-  getByChatterUserId
+  reportQuery,
+  getByReportId
 } from 'react.force.data';
 
 const subscribers = [];
@@ -28,25 +31,25 @@ const unsubscribe = (comp) => {
   }
 };
 
-const notify = (ids, records) => {
+const notify = (id, record) => {
   if(subscribers && subscribers.length){
     subscribers.forEach((subscriber)=>{
       if(subscriber && subscriber.props && subscriber.props.id){
         const searchId = subscriber.props.id;
-        const index = findIndex(ids, (id) => {
+        /*const index = findIndex(ids, (id) => {
           return id.indexOf(searchId)>-1;
-        });
+        });*/
+        const index = id.indexOf(searchId)>-1;
         if(index>-1){
-          const record = records[index];
-          subscriber.updateChatterData(record);
+          //const record = records[index];
+          subscriber.updateReportData(record);
         }
       }
     });
   }
 };
 
-chatterQuery.addListener(notify);
-
+reportQuery.addListener(notify);
 
 module.exports = React.createClass ({
   getDefaultProps(){
@@ -59,18 +62,18 @@ module.exports = React.createClass ({
     };
   },
   childContextTypes: {
-    chatterData: React.PropTypes.object,
+    reportData: React.PropTypes.object,
     doRefresh: React.PropTypes.func
   },
   getInitialState(){
     return {
-      chatterData:this.props.chatterData?this.props.chatterData:{Name:' ',attributes:{}},
+      reportData:this.props.reportData?this.props.reportData:{Name:' ',attributes:{}},
       loading:false
     };
   },
   getChildContext() {
     return {
-      chatterData: this.state.chatterData,
+      reportData: this.state.reportData,
       doRefresh: this.handleRefresh
     };
   },
@@ -85,33 +88,32 @@ module.exports = React.createClass ({
     console.log('>>> REFRESH !!!');
     this.getInfo();
   },
-  updateChatterData(chatterData){
+  updateReportData(reportData){
     this.setState({
-      chatterData:chatterData,
+      reportData:reportData,
     });
   },
   handleDataLoad(){
     if(this.props.onData){
       this.props.onData({
-        chatterData:this.state.chatterData
+        reportData:this.state.reportData
       });
     }
   },
   getInfo() {
     this.setState({loading:true});
-    if(!this.props.type || !this.props.id){
+    if(!this.props.id){
       return;
     }
-    getByChatterUserId(this.props.id)
+    getByReportId(this.props.id)
       .then((opts)=>{
-        if(opts.cachedChatterData){
+        if(opts.cachedReportData){
           this.setState({
-            chatterData: opts.cachedChatterData
+            reportData: opts.cachedReportData
           });
         }
       });
   },
-
   render() {
     return (
       <View style={this.props.style}>
@@ -120,18 +122,24 @@ module.exports = React.createClass ({
     )
   },
   componentWillReceiveProps(newProps){
-    if(this.props.refreshDate !== newProps.refreshDate){
+    //only refresh reportData every 10 minutes
+    if(this.props.refreshDate.getTime() <= newProps.refreshDate.getTime()-600000){
+      debugger;
       this.getInfo();
     }
   },
   shouldComponentUpdate(nextProps, nextState){
+    //update if change in reportId, entityId, or reportData
     if(!this.props.update){
       return false;
     }
     if(this.props.id !== nextProps.id){
       return true;
     }
-    if(!shallowEqual(this.state.chatterData, nextState.chatterData)){
+    if(this.props.entityId !== nextProps.entityId) {
+      return true;
+    }
+    if(!shallowEqual(this.state.reportData, nextState.reportData)){
       return true;
     }
     return false;
