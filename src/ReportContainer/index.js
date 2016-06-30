@@ -58,7 +58,8 @@ module.exports = React.createClass ({
       id:null,
       refreshDate:new Date(),
       update:true,
-      style:{}
+      style:{},
+      refershPeriod: 600000 // default refresh period of 10 minutes
     };
   },
   childContextTypes: {
@@ -122,9 +123,7 @@ module.exports = React.createClass ({
     )
   },
   componentWillReceiveProps(newProps){
-    //only refresh reportData every 10 minutes
-    if(this.props.refreshDate.getTime() <= newProps.refreshDate.getTime()-600000){
-      debugger;
+    if(this.props.refreshDate.getTime() <= newProps.refreshDate.getTime()-(this.props.refreshPeriod*1000)){
       this.getInfo();
     }
   },
