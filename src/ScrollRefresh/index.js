@@ -26,7 +26,9 @@
 
 'use strict';
 
-import React, {
+import React from 'react';
+
+import ReactNative, {
   View,
   ScrollView,
   RefreshControl
@@ -68,7 +70,9 @@ module.exports = React.createClass ({
           />
         }          
       >
+       <View>
         {this.props.children}
+       </View>
       </ScrollView>
     )
   },
