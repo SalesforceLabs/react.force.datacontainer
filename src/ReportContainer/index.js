@@ -1,4 +1,3 @@
-
 'use strict';
 
 import React from 'react';
@@ -59,7 +58,7 @@ module.exports = React.createClass ({
       refreshDate:new Date(),
       update:true,
       style:{},
-      refershPeriod: 600000 // default refresh period of 10 minutes
+      refreshPeriod: 600000 // default refresh period of 10 minutes, passed in as seconds
     };
   },
   childContextTypes: {
