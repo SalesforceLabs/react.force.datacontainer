@@ -163,8 +163,14 @@ module.exports = React.createClass ({
     )
   },
   componentWillReceiveProps(newProps){
+    if(this.props.type !== newProps.type){
+      return this.getInfo();
+    }
+    if(this.props.id !== newProps.id){
+      return this.getInfo();
+    }
     if(this.props.refreshDate !== newProps.refreshDate){
-      this.getInfo();
+      return this.getInfo();
     }
   },
 
