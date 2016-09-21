@@ -51,7 +51,9 @@ module.exports = React.createClass ({
     };
   },
   childContextTypes: {
-    dataSource: React.PropTypes.object
+    dataSource: React.PropTypes.object,
+    replaceData: React.PropTypes.func,
+    refreshData: React.PropTypes.func
   },
   getInitialState(){
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -62,14 +64,28 @@ module.exports = React.createClass ({
   },
   getChildContext() {
     return {
-      dataSource: this.state.dataSource
+      dataSource: this.state.dataSource,
+      replaceData: this._replaceData,
+      refreshData: this._refreshData
     };
   },
   componentDidMount(){
+    console.log('MOUNT!!!');
     this.getData();
   },
   getDataSource (items) {
     return this.state.dataSource.cloneWithRows(items);
+  },
+  _refreshData () {
+    this.getData();
+  },
+  _replaceData (items) {
+    if(items){
+      this.setState({ dataSource:this.getDataSource(items) });
+    }
+    else{
+      this.getData();
+    }
   },
   getQuery() {
     if(!this.props.type) return;
@@ -86,9 +102,11 @@ module.exports = React.createClass ({
     if(!soql){
       return;
     }
+    console.log('>>> SOQL: '+soql);
     this.setState({loading:true});
     forceClient.query(soql,
       (response) => {
+        console.log('RESPONSE: ',response);
         const items = response.records;
         if(this.props.fullFetch){
           items.forEach((item)=>{
@@ -98,6 +116,9 @@ module.exports = React.createClass ({
         this.setState({
           dataSource: this.getDataSource(items)
         });
+      },
+      (err) => {
+        console.log('ERROR: ',err);
       });
   },
 
@@ -108,9 +129,16 @@ module.exports = React.createClass ({
       </View>
     )
   },
-  componentWillReceiveProps(newProps){
-    if(this.props.refreshDate !== newProps.refreshDate){
-      this.getData();
+  componentDidUpdate(prevProps){
+    console.log('DID RECEIVE PROPS')
+    if(this.props.refreshDate !== prevProps.refreshDate){
+      return this.getData();
+    }
+    if(this.props.where !== prevProps.where){
+      return this.getData();
+    }
+    if(this.props.type !== prevProps.type){
+      return this.getData();
     }
   },
 });
