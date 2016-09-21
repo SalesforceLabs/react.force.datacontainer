@@ -53,7 +53,8 @@ module.exports = React.createClass ({
   childContextTypes: {
     dataSource: React.PropTypes.object,
     replaceData: React.PropTypes.func,
-    refreshData: React.PropTypes.func
+    refreshData: React.PropTypes.func,
+    listRefreshing: React.PropTypes.bool
   },
   getInitialState(){
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -66,11 +67,11 @@ module.exports = React.createClass ({
     return {
       dataSource: this.state.dataSource,
       replaceData: this._replaceData,
-      refreshData: this._refreshData
+      refreshData: this._refreshData,
+      listRefreshing: this.state.loading
     };
   },
   componentDidMount(){
-    console.log('MOUNT!!!');
     this.getData();
   },
   getDataSource (items) {
@@ -102,11 +103,9 @@ module.exports = React.createClass ({
     if(!soql){
       return;
     }
-    console.log('>>> SOQL: '+soql);
     this.setState({loading:true});
     forceClient.query(soql,
       (response) => {
-        console.log('RESPONSE: ',response);
         const items = response.records;
         if(this.props.fullFetch){
           items.forEach((item)=>{
@@ -114,11 +113,15 @@ module.exports = React.createClass ({
           });
         }
         this.setState({
-          dataSource: this.getDataSource(items)
+          dataSource: this.getDataSource(items),
+          loading:false
         });
       },
       (err) => {
         console.log('ERROR: ',err);
+        this.setState({
+          loading:false
+        });
       });
   },
 
@@ -130,7 +133,6 @@ module.exports = React.createClass ({
     )
   },
   componentDidUpdate(prevProps){
-    console.log('DID RECEIVE PROPS')
     if(this.props.refreshDate !== prevProps.refreshDate){
       return this.getData();
     }
