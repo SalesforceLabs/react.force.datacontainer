@@ -162,14 +162,14 @@ module.exports = React.createClass ({
       </View>
     )
   },
-  componentWillReceiveProps(newProps){
-    if(this.props.type !== newProps.type){
+  componentDidUpdate(prevProps){
+    if(this.props.type !== prevProps.type){
       return this.getInfo();
     }
-    if(this.props.id !== newProps.id){
+    if(this.props.id !== prevProps.id){
       return this.getInfo();
     }
-    if(this.props.refreshDate !== newProps.refreshDate){
+    if(this.props.refreshDate !== prevProps.refreshDate){
       return this.getInfo();
     }
   },
