@@ -26,6 +26,7 @@
  
 import SobjContainer from './SobjContainer';
 import List from './List';
+import SearchQueryList from './SearchQueryList';
 import RelevantItems from './RelevantItems';
 import ScrollRefresh from './ScrollRefresh';
 import {utils} from 'react.force.data';
@@ -35,6 +36,7 @@ module.exports = {
   Sobj: SobjContainer,
   ListContainer: List,
   List: List,
+  SearchQueryList: SearchQueryList,
   RelevantItems: RelevantItems,
   ScrollRefresh: ScrollRefresh,
   utils: utils
