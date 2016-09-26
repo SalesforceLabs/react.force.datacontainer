@@ -26,7 +26,9 @@
 
 'use strict';
 
-import React, {
+import React from 'react';
+
+import {
   View,
   ScrollView,
   RefreshControl
@@ -70,6 +72,6 @@ module.exports = React.createClass ({
       >
         {this.props.children}
       </ScrollView>
-    )
+    );
   },
 });

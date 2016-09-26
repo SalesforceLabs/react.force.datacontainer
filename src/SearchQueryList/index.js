@@ -26,7 +26,9 @@
  
 'use strict';
 
-import React, {
+import React from 'react';
+
+import {
   Text,
   View,
   ListView
