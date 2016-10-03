@@ -36,20 +36,29 @@ import {
 
 module.exports = React.createClass ({
   contextTypes: {
+    sobj: React.PropTypes.object,
     doRefresh: React.PropTypes.func,
-    refreshedDate: React.PropTypes.instanceOf(Date)
+    refreshedDate: React.PropTypes.number,
+    isRefreshing: React.PropTypes.bool,
   },
 
   getInitialState(){
     return {
+      pullStart: null,
       refreshing: false,
     };
   },
 
   onRefresh(){
-    this.setState({refreshing:true});
+    this.setState({
+      pullStart:Date.now(),
+      refreshing:true
+    });
     if(this.context.doRefresh){
-      this.context.doRefresh();
+      this.context.doRefresh({
+        noCache:true,
+        noMetaCache:true
+      });
     }
   },
 
@@ -61,14 +70,14 @@ module.exports = React.createClass ({
 
   render() {
     return (
-      <ScrollView {... this.props} 
+      <ScrollView {... this.props}
         style={[this.props.style]}
         refreshControl={
           <RefreshControl
-            refreshing={this.state.refreshing}
+            refreshing={this.context.isRefreshing}
             onRefresh={this.onRefresh}
           />
-        }          
+        }
       >
         {this.props.children}
       </ScrollView>

@@ -59,7 +59,7 @@ const notify = (ids,sobjs,compactLayout,defaultLayout) => {
     subscribers.forEach((subscriber)=>{
       if(subscriber && subscriber.props && subscriber.props.id){
         const searchId = subscriber.props.id;
-        const index = findIndex(ids, (id) => { 
+        const index = findIndex(ids, (id) => {
           return id.indexOf(searchId)>-1;
         });
         if(index>-1){
@@ -90,7 +90,8 @@ module.exports = React.createClass ({
     compactLayout: React.PropTypes.object,
     defaultLayout: React.PropTypes.object,
     doRefresh: React.PropTypes.func,
-    refreshedDate: React.PropTypes.instanceOf(Date)
+    refreshedDate: React.PropTypes.number,
+    isRefreshing: React.PropTypes.bool
   },
   getInitialState(){
     return {
@@ -98,7 +99,7 @@ module.exports = React.createClass ({
       compactLayout:{},
       defaultLayout:{},
       loading:false,
-      refreshedDate: new Date()
+      refreshedDate: Date.now()
     };
   },
   getChildContext() {
@@ -107,7 +108,8 @@ module.exports = React.createClass ({
       compactLayout:this.state.compactLayout,
       defaultLayout:this.state.defaultLayout,
       doRefresh:this.handleRefresh,
-      refreshedDate:this.state.refreshedDate
+      refreshedDate:this.state.refreshedDate,
+      isRefreshing:this.state.loading
     };
   },
   componentDidMount(){
@@ -117,9 +119,8 @@ module.exports = React.createClass ({
   componentWillUnmount(){
     unsubscribe(this);
   },
-  handleRefresh(){
-    console.log('>>> REFRESH !!!');
-    this.getInfo(true);
+  handleRefresh(cfg){
+    this.getInfo(cfg);
   },
   updateSobj(sobj,compactLayout,defaultLayout){
     this.setState({
@@ -127,7 +128,7 @@ module.exports = React.createClass ({
       loading:false,
       compactLayout:compactLayout,
       defaultLayout:defaultLayout,
-      refreshedDate: new Date()
+      refreshedDate: Date.now()
     });
   },
   handleDataLoad(){
@@ -138,20 +139,23 @@ module.exports = React.createClass ({
       });
     }
   },
-  getInfo(nocache) {
+  getInfo(cfg) {
+    const noCache = cfg?cfg.noCache:false;
+    const noMetaCache = cfg?cfg.noMetaCache:false;
     this.setState({loading:true});
     if(!this.props.type || !this.props.id){
       return;
     }
-    getByTypeAndId(this.props.type,this.props.id,nocache)
+    getByTypeAndId(this.props.type,this.props.id,noCache,noMetaCache)
     .then((opts)=>{
         if(opts.cachedSobj){
           this.setState({
+            loading:false,
             sobj:opts.cachedSobj,
             compactTitle: opts.cachedSobj.attributes.compactTitle,
             compactLayout:opts.cachedCompactLayout,
             defaultLayout:opts.cachedDefaultLayout,
-            refreshedDate: new Date()
+            refreshedDate: Date.now()
           });
         }
       });
@@ -184,6 +188,9 @@ module.exports = React.createClass ({
       return true;
     }
     if(this.props.id !== nextProps.id){
+      return true;
+    }
+    if(this.state.refreshedDate < nextState.refreshedDate){
       return true;
     }
     if(!shallowEqual(this.state.sobj, nextState.sobj)){
