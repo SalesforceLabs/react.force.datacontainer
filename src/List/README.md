@@ -5,7 +5,7 @@ Shares query result with child components via `context.datasource`
 
 See [Dreamhouse App](https://github.com/ForceDotComLabs/dreamhouse-mobile-react) for [sample code](https://github.com/ForceDotComLabs/dreamhouse-mobile-react/blob/master/js/app/BrokerList/index.js)
 
-## Sample code:
+## Usage:
 
 Import statement:
 
