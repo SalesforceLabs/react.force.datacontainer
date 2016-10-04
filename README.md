@@ -36,8 +36,8 @@ Sobj component JSX code:
 
   ```
 ## Components:
-1. SobjContainer
-2. ScrollRefresh
-3. List
-4. SearchQueryList
-5. RelevantItems
+1. [SobjContainer](/src/SobjContainer)
+2. [ScrollRefresh](/src/ScrollRefresh)
+3. [List](/src/List)
+4. [SearchQueryList](/src/SearchQueryList)
+5. [RelevantItems](/src/RelevantItems)
