@@ -17,7 +17,9 @@ ListContainer component JSX code:
 
 ```jsx
     <ListContainer 
-      type='Broker__c'
+      type="Property__c"
+      where="City__c = 'Boston'"
+      limit={100}
       style={styles.container}>
       <YourListComponent />
     </ListContainer>
