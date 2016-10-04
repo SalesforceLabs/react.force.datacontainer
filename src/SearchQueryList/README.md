@@ -1,6 +1,6 @@
 # SearchQueryList
 
-SearchQueryList makes simple SOSL query and shares result with child components via `context.datasource`
+SearchQueryList makes simple SOSL query and updates child components.
 
 See [Dreamhouse App](https://github.com/ForceDotComLabs/dreamhouse-mobile-react) for [sample code](https://github.com/ForceDotComLabs/dreamhouse-mobile-react/blob/master/js/app/PropertyList/index.js)
 
