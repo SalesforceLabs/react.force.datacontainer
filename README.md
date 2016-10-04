@@ -1,4 +1,4 @@
-# react.force.datacontainer: Data Components for React Native
+# Data Components for React Native
 
 DataContainer components are designed to simplify Salesforce REST API usage with React Native apps.
 Developers can retrieve data with Salesforce REST API using declarative JSX markup.
@@ -28,13 +28,14 @@ Sobj component JSX code:
 
 ## Setup
 
-1. add to an existing React Native project:
+add to an existing React Native project:
 
-  ```
+```
 
   npm install https://github.com/ForceDotComLabs/react.force.datacontainer.git --save
 
-  ```
+```
+
 ## Components:
 1. [SobjContainer](/src/SobjContainer)
 2. [ScrollRefresh](/src/ScrollRefresh)
