@@ -1,6 +1,6 @@
 # ListContainer
 
-ListContainer makes simple SOQL queries and shares result with child components via `context.datasource`
+ListContainer makes simple SOQL queries and updates child components.
 
 See [Dreamhouse App](https://github.com/ForceDotComLabs/dreamhouse-mobile-react) for [sample code](https://github.com/ForceDotComLabs/dreamhouse-mobile-react/blob/master/js/app/BrokerList/index.js)
 
