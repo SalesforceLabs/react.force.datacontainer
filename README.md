@@ -3,13 +3,16 @@
 DataContainer components are designed to simplify Salesforce REST API usage with React Native apps.
 Developers can retrieve data with Salesforce REST API using declarative JSX markup.
 
+See [Dreamhouse App](https://github.com/ForceDotComLabs/dreamhouse-mobile-react) for [sample code](https://github.com/ForceDotComLabs/dreamhouse-mobile-react/blob/master/js/app/)
+
 
 ### Attention: This is an experimental project published under ForceDotComLabs: 
 
 1. work in progress
 2. we need your feedback
 
-## Sample code:
+
+## Usage:
 
 Import statement:
 
