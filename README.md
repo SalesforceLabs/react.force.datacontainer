@@ -39,6 +39,6 @@ add to an existing React Native project:
 ## Components:
 1. [SobjContainer](/src/SobjContainer)
 2. [ScrollRefresh](/src/ScrollRefresh)
-3. [List](/src/List)
+3. [ListContainer](/src/List)
 4. [SearchQueryList](/src/SearchQueryList)
 5. [RelevantItems](/src/RelevantItems)
